@@ -57,7 +57,7 @@ const About = () => {
         </div>
         <div style={{ flex: 2 }}>
           {selectedOption.info.map((data) => (
-            <div >
+            <div key={data.id}>
               <h2>
                 <a onClick={() => handleInfoClick(data)}>{data.name}</a>
               </h2>
