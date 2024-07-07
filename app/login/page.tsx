@@ -18,17 +18,15 @@ const Login = () => {
   const searchParams = useSearchParams();
   const redirect = searchParams.get('redirect') || '/post';
 
+  useEffect(() => {
+    // Ensure this runs only on the client side
+    const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
+    setUsers(storedUsers);
+  }, []);
+
+
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-
-    // const users = JSON.parse(localStorage.getItem('users') || '[]');
-    
-    useEffect(() => {
-        // Ensure this runs only on the client side
-        const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
-        setUsers(storedUsers);
-      }, []);
-    
 
     const user = users.find((user: { email: string; password: string }) => user.email === email && user.password === password);
     //   console.log("users",users)
