@@ -5,12 +5,14 @@ import { FormEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setUser } from '@/store/userSlice';
 import { useRouter,useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [users, setUsers] = useState<{ email: string; password: string }[]>([]);
   const dispatch = useDispatch();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -19,9 +21,17 @@ const Login = () => {
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
 
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    // const users = JSON.parse(localStorage.getItem('users') || '[]');
+    
+    useEffect(() => {
+        // Ensure this runs only on the client side
+        const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
+        setUsers(storedUsers);
+      }, []);
+    
+
     const user = users.find((user: { email: string; password: string }) => user.email === email && user.password === password);
-      console.log("users",users)
+    //   console.log("users",users)
     if (user) {
       dispatch(setUser(user));
       router.push(redirect);
